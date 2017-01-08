@@ -10,6 +10,6 @@ def getNumbers(string):
     returnList.append(numbers)
     return returnList
 a = '123fe43he567'
-print getNumbers(a)
+print (getNumbers(a))
 
 
