@@ -78,7 +78,16 @@ notStronglyConnected = {v[0]:[v[1]],
                      v[2]:[v[0]],
                      v[4]:[v[1]]}
 
-
+def make_graph(v):
+    euler = {v[0]:[v[1], v[2]],
+     v[1]:[v[0], v[3]],
+     v[2]:[v[0], v[3]],
+     v[3]:[v[6], v[2], v[4], v[1]],
+     v[4]:[v[3], v[6], v[5], v[7]],
+     v[5]:[v[4], v[6]],
+     v[6]:[v[3], v[4], v[5], v[7]],
+     v[7]:[v[6], v[4]]}
+    return euler
 
 test = {v[0]:[v[1]],
      v[1]:[v[0]]}
@@ -112,16 +121,16 @@ def no_cycles(G):
     q = myqueue()
     q.enqueue(s) 
     while q:
-        u = q.dequeue() 
-            if v.distance == INFINITY:
-                v.distance = u.distance + 1
-                v.predecessor = u
-                q.enqueue(v)
-            elif v.distance >= u.distance:
-                return False
+        u = q.dequeue()
+        if v.distance == INFINITY:
+            v.distance = u.distance + 1
+            v.predecessor = u
+            q.enqueue(v)
+        elif v.distance >= u.distance:
+            return False
     return True
 
-print(no_cycles(G1))
+#print(no_cycles(G1))
 
 def path_BFS(G,u,v):
     BFS(G,u)
@@ -133,7 +142,7 @@ def path_BFS(G,u,v):
             current = current.predecessor
         a.reverse()
     return a
-
+"""
 def is_connected(G):
     V = vertices(G)
     s = G[V[0]][0]
@@ -155,6 +164,16 @@ def is_connected(G):
                 v.predecessor = u
                 q.enqueue(v)
     return len(V)==len(usedVertices)
+"""
+def is_connected(G):
+    V = vertices(G)
+    BFS(G, V[0])
+    for v in G:
+        if v.distance == INFINITY:
+            return False
+    return True 
+
+
 
 def isConnected(G, s, e):
     V = vertices(G)
@@ -227,7 +246,7 @@ def is_strongly_connected(G):
 def is_euler_graph(G):
     V = vertices(G)
     for i in range(len(V)-1):
-        if len(G[V[i]]) != len(G[V[i+1]]):
+        if len(G[V[i]])%2:
             return False
     return True
 
@@ -239,12 +258,9 @@ def get_euler_circuit(G, s):
             if a not in getBridges(G, s):
                 t = a
                 break
-            else:
-                print("hi")
         path.append(t)   
         G[t].remove(s)
         G[s].remove(t)
-        print(path)
         s = t
     return path
 """
@@ -264,4 +280,15 @@ def get_euler_circuit(G, s):
     return path
 """
 
+#print(is_connected(G1))
+#print(is_connected(G2))
+#print(no_cycles(G2))
+#print(no_cycles(G3))
+#for V in v:
+#    print(get_euler_circuit(make_graph(v),V))
+
+print(get_euler_circuit(euler, v[1]))
+
+#print(is_euler_graph(euler))
 #print(get_euler_circuit(euler, v[4]))
+#print(5%2)
